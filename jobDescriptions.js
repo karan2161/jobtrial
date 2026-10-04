@@ -1,0 +1,13 @@
+import { Router } from 'express';
+import { jobDescriptionController as c } from '../controllers/jobDescriptionController.js';
+import { aiLimiter } from '../middleware/rateLimiter.js';
+import { validate } from '../middleware/validation.js';
+import { idParams, jdAnalyze, jdCreate, jdUpdate } from '../utils/validation.js';
+const router = Router();
+router.get('/', c.list);
+router.post('/', validate({ body: jdCreate }), c.create);
+router.post('/analyze', aiLimiter, validate({ body: jdAnalyze }), c.analyze);
+router.get('/:id', validate({ params: idParams }), c.get);
+router.put('/:id', validate({ params: idParams, body: jdUpdate }), c.update);
+router.delete('/:id', validate({ params: idParams }), c.remove);
+export default router;

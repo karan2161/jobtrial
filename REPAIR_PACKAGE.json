@@ -1,0 +1,9 @@
+{
+  "status": "repaired-source-package",
+  "source": "uploaded Job Trail project",
+  "notes": [
+    "Secrets/.env files removed from the package.",
+    "node_modules and .git removed; install dependencies locally.",
+    "Use the included README/repair notes for validation."
+  ]
+}

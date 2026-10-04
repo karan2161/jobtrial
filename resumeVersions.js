@@ -1,0 +1,15 @@
+import { Router } from 'express';
+import { resumeVersionController as c } from '../controllers/resumeVersionController.js';
+import { validate } from '../middleware/validation.js';
+import { compareQuery, idParams, versionCreate, versionListQuery, versionUpdate } from '../utils/validation.js';
+const router = Router();
+router.get('/', validate({ query: versionListQuery }), c.list);
+router.post('/', validate({ body: versionCreate }), c.create);
+router.get('/:id', validate({ params: idParams }), c.get);
+router.put('/:id', validate({ params: idParams, body: versionUpdate }), c.update);
+router.delete('/:id', validate({ params: idParams }), c.remove);
+router.post('/:id/duplicate', validate({ params: idParams }), c.duplicate);
+router.post('/:id/restore', validate({ params: idParams }), c.restore);
+router.get('/:id/compare', validate({ params: idParams, query: compareQuery }), c.compare);
+router.get('/:id/download', validate({ params: idParams }), c.download);
+export default router;

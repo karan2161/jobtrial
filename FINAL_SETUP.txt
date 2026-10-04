@@ -1,0 +1,26 @@
+JOB TRAIL — FINAL GEMINI + RESUME DOWNLOAD BUILD
+
+This is the complete project package. It includes the Gemini AI provider and the Word/PDF tailored-resume download feature.
+
+IMPORTANT:
+- Your real server/.env is intentionally NOT included.
+- Copy your working .env into: server/.env
+- Keep your Supabase keys and Gemini key in server/.env only.
+
+Recommended .env values:
+AI_PROVIDER=gemini
+GEMINI_API_KEY=YOUR_GEMINI_API_KEY
+GEMINI_MODEL=gemini-3.5-flash-lite
+
+Keep your existing Supabase variables unchanged.
+
+START:
+1. Open CMD in the server folder.
+2. Run: npm install
+3. Run: npm start
+4. Open: http://localhost:4000
+
+WORKFLOW TO TEST:
+Login -> Upload resume -> Save/analyze job -> Analyze ATS -> Tailor resume with AI -> Download Word or Download PDF.
+
+The package also includes the fix for the job_descriptions 'force' column error: the force flag is no longer sent to Supabase as a database column.

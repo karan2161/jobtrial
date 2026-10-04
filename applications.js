@@ -1,0 +1,17 @@
+import { Router } from 'express';
+import { applicationController as c } from '../controllers/applicationController.js';
+import { applicationEventController as ev } from '../controllers/applicationEventController.js';
+import { interviewController as iv } from '../controllers/interviewController.js';
+import { validate } from '../middleware/validation.js';
+import { applicationCreate, applicationListQuery, applicationStatusBody, applicationUpdate, eventBody, idParams, interviewCreate } from '../utils/validation.js';
+const router = Router();
+router.get('/', validate({ query: applicationListQuery }), c.list);
+router.post('/', validate({ body: applicationCreate }), c.create);
+router.get('/:id', validate({ params: idParams }), c.get);
+router.put('/:id', validate({ params: idParams, body: applicationUpdate }), c.update);
+router.patch('/:id/status', validate({ params: idParams, body: applicationStatusBody }), c.status);
+router.delete('/:id', validate({ params: idParams }), c.remove);
+router.post('/:id/events', validate({ params: idParams, body: eventBody }), ev.create);
+router.get('/:id/interviews', validate({ params: idParams }), iv.listForApplication);
+router.post('/:id/interviews', validate({ params: idParams, body: interviewCreate }), iv.create);
+export default router;

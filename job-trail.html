@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Job Trail — Your job search, organized intelligently.</title>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#1c1636;--bg:#fbf9ff;--sf:#fff;--bd:#e9e4f5;--mut:#6b6485;--vio:#6d4aff;--cor:#ff6b57;--teal:#0fb5a3;--sun:#ffb020;--grn:#18a957;--pink:#e8489a;--slate:#8a84a3;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+:root:not([data-theme=light]){color-scheme:light}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:calc(72px + env(safe-area-inset-top,0px))}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 'DM Sans',system-ui,sans-serif}
+h1,h2,h3{font-family:'Bricolage Grotesque',system-ui,sans-serif;line-height:1.05;margin:0;letter-spacing:-.02em}
+a{color:inherit;text-decoration:none}
+:focus-visible{outline:3px solid var(--vio);outline-offset:2px;border-radius:8px}
+.w{max-width:1140px;margin:0 auto;padding:0 20px}
+section{padding:84px 0}
+h2{font-size:clamp(30px,4.4vw,46px);font-weight:800;max-width:16ch}
+.sub{color:var(--mut);max-width:52ch;margin:14px 0 0}
+.btn{display:inline-flex;align-items:center;gap:8px;border:0;border-radius:12px;padding:13px 22px;font:600 15px 'DM Sans';cursor:pointer;transition:transform .15s,box-shadow .15s}
+.btn:active{transform:scale(.97)}
+.b1{background:var(--ink);color:#fff;box-shadow:4px 4px 0 var(--cor)}.b1:hover{box-shadow:2px 2px 0 var(--cor);transform:translate(2px,2px)}
+.b2{background:#fff;color:var(--ink);border:1.5px solid var(--ink)}
+nav{position:sticky;top:0;z-index:20;background:rgba(251,249,255,.85);backdrop-filter:blur(10px);border-bottom:1px solid transparent;transition:border-color .2s,box-shadow .2s;padding-top:env(safe-area-inset-top,0px)}
+nav.s{border-color:var(--bd);box-shadow:0 4px 20px rgba(28,22,54,.05)}
+nav .w{display:flex;align-items:center;height:64px;gap:28px}
+.logo{font:800 20px 'Bricolage Grotesque';display:flex;align-items:center;gap:8px}
+.logo i{width:22px;height:22px;border-radius:7px;background:conic-gradient(var(--vio),var(--pink),var(--cor),var(--sun),var(--teal),var(--vio))}
+nav ul{display:flex;gap:22px;list-style:none;margin:0 0 0 auto;padding:0;font-size:14px;color:var(--mut)}
+nav ul a:hover{color:var(--ink)}
+.acts{display:flex;gap:10px;align-items:center}.acts .btn{padding:9px 16px;font-size:14px}
+@media(max-width:860px){nav ul{display:none}nav .acts{margin-left:auto}}
+/* hero */
+.hero{padding:64px 0 40px}
+.hero h1{font-size:clamp(42px,7.6vw,88px);font-weight:800;max-width:12ch}
+.hero p{font-size:19px;color:var(--mut);max-width:54ch;margin:22px 0 30px}
+.cta{display:flex;gap:14px;flex-wrap:wrap}
+.trail{margin-top:56px;background:var(--sf);border:1.5px solid var(--ink);border-radius:20px;padding:20px 12px 8px;overflow:hidden}
+.trail svg{width:100%;height:auto;display:block}
+.path{stroke-dasharray:1400;stroke-dashoffset:1400;animation:draw 2.6s .3s ease forwards}
+@keyframes draw{to{stroke-dashoffset:0}}
+.node{opacity:0;transform-origin:center;transform-box:fill-box;animation:pop .5s ease forwards}
+@keyframes pop{from{opacity:0;transform:scale(.4)}to{opacity:1;transform:scale(1)}}
+.nl{font:700 14px 'Bricolage Grotesque';fill:var(--ink);opacity:0;animation:pop .5s ease forwards}
+/* cards */
+.grid{display:grid;gap:14px;margin-top:36px}
+.g3{grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
+.prob{padding:20px;border-radius:16px;border:1.5px solid var(--bd);background:var(--sf)}
+.prob b{display:block;font:700 18px 'Bricolage Grotesque';margin-bottom:4px}
+.prob span{color:var(--mut);font-size:14px}
+.prob:nth-child(1){background:#f1edff}.prob:nth-child(2){background:#fff0ec}.prob:nth-child(3){background:#e6f8f5}
+.prob:nth-child(4){background:#fff6df}.prob:nth-child(5){background:#fdeaf4}.prob:nth-child(6){background:#e8f7ee}
+/* demo app */
+.demo{background:var(--ink);color:#fff;border-radius:28px;padding:0}
+.demo section{padding:64px 0}
+.demo h2{max-width:20ch}.demo .sub{color:#b9b2d6}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin:28px 0 16px}
+.tab{border:1.5px solid #ffffff33;background:transparent;color:#fff;border-radius:999px;padding:8px 16px;font:500 14px 'DM Sans';cursor:pointer;transition:background .2s}
+.tab[aria-selected=true]{background:#fff;color:var(--ink);border-color:#fff}
+.app{background:var(--bg);color:var(--ink);border-radius:18px;padding:20px;min-height:430px}
+.pane{display:none}.pane.on{display:block;animation:in .35s ease}
+@keyframes in{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px}
+.st{border-radius:14px;padding:14px;color:var(--ink)}
+.st b{font:800 30px 'Bricolage Grotesque';display:block}.st span{font-size:13px;opacity:.75}
+.row2{display:grid;grid-template-columns:1.4fr 1fr;gap:12px;margin-top:12px}
+@media(max-width:760px){.row2{grid-template-columns:1fr}}
+.box{background:#fff;border:1px solid var(--bd);border-radius:14px;padding:16px}
+.box h3{font-size:16px;margin-bottom:10px}
+.rem{display:flex;gap:10px;align-items:center;padding:8px 0;border-top:1px solid var(--bd);font-size:14px}
+.dot{width:10px;height:10px;border-radius:50%;flex:none}
+.pill{font-size:12px;font-weight:600;padding:3px 10px;border-radius:999px;display:inline-block}
+/* analyzer */
+.an{display:grid;grid-template-columns:220px 1fr;gap:18px;align-items:start}
+@media(max-width:760px){.an{grid-template-columns:1fr}}
+.ring{position:relative;width:180px;height:180px;margin:auto}
+.ring svg{transform:rotate(-90deg)}.ring b{position:absolute;inset:0;display:grid;place-items:center;font:800 46px 'Bricolage Grotesque'}
+.chip{display:inline-block;margin:3px 4px 3px 0;padding:4px 11px;border-radius:999px;font-size:13px;font-weight:500}
+.ok{background:#dcf5e6;color:#0d6b37}.no{background:#ffe3df;color:#a3261a}
+.cmp{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px;font-size:14px}
+@media(max-width:560px){.cmp{grid-template-columns:1fr}}
+.cmp div{padding:12px;border-radius:12px}
+/* kanban */
+.kb{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(170px,1fr);gap:10px;overflow-x:auto;padding-bottom:6px}
+.col{background:#f1eef9;border-radius:14px;padding:10px;min-height:250px;transition:background .2s}
+.col.over{background:#e2dbff}
+.col h3{font-size:14px;display:flex;align-items:center;gap:6px;margin-bottom:8px}
+.kc{background:#fff;border:1px solid var(--bd);border-radius:12px;padding:11px;margin-bottom:8px;cursor:grab;font-size:13px;border-left-width:4px;transition:transform .15s,box-shadow .15s}
+.kc:hover{transform:translateY(-2px);box-shadow:0 6px 16px rgba(28,22,54,.1)}.kc.drag{opacity:.4}
+.kc b{display:block;font-size:14px}.kc small{color:var(--mut)}
+/* chat */
+.chat{max-width:640px;margin:auto;display:flex;flex-direction:column;gap:10px;font-size:15px}
+.m{padding:12px 15px;border-radius:14px;max-width:88%}
+.mu{background:var(--ink);color:#fff;align-self:flex-end}
+.ma{background:#fff;border:1px solid var(--bd)}
+.ma mark{background:#ffe9a8;padding:0 3px;border-radius:4px}
+.cur::after{content:"";display:inline-block;width:7px;height:15px;background:var(--vio);margin-left:2px;vertical-align:-2px;animation:bl 1s steps(2) infinite}
+@keyframes bl{50%{opacity:0}}
+/* steps */
+.steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin-top:36px}
+.step{padding:22px;border-radius:18px;opacity:0;transform:translateY(16px);transition:all .6s}
+.step.in{opacity:1;transform:none}
+.step i{font:800 44px 'Bricolage Grotesque';font-style:normal;display:block;line-height:1}
+.step h3{font-size:20px;margin:10px 0 4px}.step p{margin:0;font-size:14px;opacity:.8}
+.mods{display:flex;flex-wrap:wrap;gap:10px;margin-top:30px}
+.mod{padding:11px 18px;border-radius:14px;font:600 15px 'DM Sans';border:1.5px solid var(--ink);background:#fff;transition:transform .15s}
+.mod:hover{transform:rotate(-2deg) translateY(-2px)}
+.final{background:linear-gradient(135deg,var(--vio),var(--pink) 55%,var(--cor));color:#fff;border-radius:28px;padding:64px 32px;text-align:center}
+.final h2{margin:0 auto 24px;max-width:18ch}.final .btn{background:#fff;color:var(--ink)}
+footer{padding:36px 0 48px;color:var(--mut);font-size:14px}
+footer .w{display:flex;flex-wrap:wrap;gap:12px 26px;align-items:center}footer .logo{color:var(--ink);margin-right:auto}
+@media(prefers-reduced-motion:reduce){*{animation-duration:.01s!important;animation-delay:0s!important;transition:none!important}.path{stroke-dashoffset:0}}
+</style></head><body>
+<nav id="nav"><div class="w"><a class="logo" href="#top"><i></i>Job Trail</a>
+<ul><li><a href="#app">Product</a></li><li><a href="#problem">Features</a></li><li><a href="#how">How it works</a></li><li><a href="#app" data-go="chat">AI Assistant</a></li><li><a href="#faq">FAQ</a></li></ul>
+<div class="acts"><button id="loginBtn" class="btn b2">Log in</button><a href="#final" class="btn b1">Get started</a></div></div></nav>
+
+<header class="hero" id="top"><div class="w">
+<h1>Turn your job search into a system.</h1>
+<p>Tailor your resume, track every application, understand your ATS match, and stay on top of your job search, all in one intelligent workspace.</p>
+<div class="cta"><a class="btn b1" href="#final">Get started free</a><a class="btn b2" href="#how">See how it works</a></div>
+<div class="trail" aria-label="Your application trail from saved to offer">
+<svg viewBox="0 0 1100 200" role="img"><path class="path" d="M40 140 C 160 40, 240 40, 300 110 S 460 190, 560 110 S 720 30, 800 100 S 960 170, 1060 70" fill="none" stroke="#1c1636" stroke-width="4" stroke-linecap="round" stroke-dasharray="1400"/>
+<g id="tn"></g></svg></div></div></header>
+
+<section id="problem"><div class="w"><h2>Job hunting gets messy fast.</h2>
+<div class="grid g3">
+<div class="prob"><b>Too many resume versions</b><span>Final_v7_REAL.pdf is not a system.</span></div>
+<div class="prob"><b>Lost application details</b><span>Which role was that, and who emailed you?</span></div>
+<div class="prob"><b>Unknown ATS fit</b><span>You can't fix a score you never see.</span></div>
+<div class="prob"><b>Forgotten follow-ups</b><span>The best week to nudge is easy to miss.</span></div>
+<div class="prob"><b>Scattered job descriptions</b><span>Postings vanish once they close.</span></div>
+<div class="prob"><b>No view of progress</b><span>Are you getting replies? Hard to tell.</span></div></div>
+<div class="mods" aria-label="Modules"><span class="mod" style="background:#f1edff">AI resume tailoring</span><span class="mod" style="background:#fff0ec">Job description analysis</span><span class="mod" style="background:#e6f8f5">ATS compatibility</span><span class="mod" style="background:#fff6df">Resume version control</span><span class="mod" style="background:#fdeaf4">Application tracker</span><span class="mod" style="background:#e8f7ee">Analytics</span><span class="mod" style="background:#f1edff">Smart reminders</span><span class="mod" style="background:#fff0ec">AI career assistant</span></div>
+</div></section>
+
+<div class="w"><div class="demo" id="app"><section><div style="padding:0 clamp(16px,4vw,44px)">
+<h2>One workspace for the entire job search.</h2>
+<p class="sub"><span id="appDataNote">Live job-search data will appear here after you log in.</span></p>
+<div class="tabs" role="tablist">
+<button class="tab" role="tab" aria-selected="true" data-t="dash">Dashboard</button>
+<button class="tab" role="tab" aria-selected="false" data-t="an">Resume analyzer</button>
+<button class="tab" role="tab" aria-selected="false" data-t="kb">Applications</button>
+<button class="tab" role="tab" aria-selected="false" data-t="chat">AI assistant</button></div>
+<div class="app">
+<div class="pane on" id="p-dash"><h3 style="font-size:22px" id="greeting">Good morning</h3><p class="sub" style="margin:2px 0 14px">Here's what's happening with your job search.</p>
+<div class="stats" id="stats"></div>
+<div class="row2"><div class="box"><h3>Applications over time</h3><svg id="line" viewBox="0 0 400 130" width="100%"></svg></div>
+<div class="box"><h3>Reminders</h3>
+<div class="rem"><span class="dot" style="background:var(--pink)"></span><span><b>Interview</b> with Razorpay<br><small>Tomorrow, 10:00 AM</small></span></div>
+<div class="rem"><span class="dot" style="background:var(--sun)"></span><span><b>Follow up</b> with Atlassian<br><small>Friday</small></span></div>
+<div class="rem"><span class="dot" style="background:var(--teal)"></span><span><b>Deadline</b> Zoho, Frontend role<br><small>In 3 days</small></span></div></div></div></div>
+<div class="pane" id="p-an">
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:18px">
+  <div class="box">
+    <h3>1. Upload your resume</h3>
+    <p class="sub">PDF or DOCX. Your file is parsed and stored in your account.</p>
+    <input id="resumeFile" type="file" accept=".pdf,.docx,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document" style="width:100%;margin:10px 0">
+    <input id="resumeName" type="text" placeholder="Resume name (optional)" style="width:100%;padding:11px;border:1px solid #ddd;border-radius:10px;box-sizing:border-box">
+    <button class="btn b1" id="uploadResume" style="margin-top:10px;padding:9px 16px;font-size:14px">Upload resume</button>
+    <div id="resumeStatus" class="sub" style="margin-top:10px"></div>
+  </div>
+  <div class="box">
+    <h3>2. Add the job description</h3>
+    <input id="jdTitle" type="text" placeholder="Job title" style="width:100%;padding:11px;border:1px solid #ddd;border-radius:10px;box-sizing:border-box;margin:8px 0">
+    <input id="jdCompany" type="text" placeholder="Company (optional)" style="width:100%;padding:11px;border:1px solid #ddd;border-radius:10px;box-sizing:border-box;margin:0 0 8px">
+    <textarea id="jdText" rows="8" placeholder="Paste the complete job description here..." style="width:100%;padding:11px;border:1px solid #ddd;border-radius:10px;box-sizing:border-box;resize:vertical"></textarea>
+    <button class="btn b2" id="saveJd" style="margin-top:10px;padding:9px 16px;font-size:14px">Save & analyze job</button>
+    <div id="jdStatus" class="sub" style="margin-top:10px"></div>
+  </div>
+</div>
+<div class="box">
+  <h3>3. Analyze and tailor</h3>
+  <p class="sub">Upload a resume and save a job description first. Tailoring creates a new version and never overwrites your original.</p>
+  <div style="display:flex;gap:10px;flex-wrap:wrap">
+    <button class="btn b2" id="analyzeResumeBtn" style="padding:9px 16px;font-size:14px">Analyze ATS match</button>
+    <button class="btn b1" id="tailorResumeBtn" style="padding:9px 16px;font-size:14px">Tailor resume with AI</button>
+  </div>
+  <div id="tailorStatus" class="sub" style="margin-top:12px"></div>
+  <div id="tailoredDownloads" style="display:none;margin-top:12px;gap:10px;flex-wrap:wrap">
+    <button class="btn b2" id="downloadDocxBtn" style="padding:9px 16px;font-size:14px">Download Word (.docx)</button>
+    <button class="btn b1" id="downloadPdfBtn" style="padding:9px 16px;font-size:14px">Download PDF</button>
+  </div>
+  <pre id="tailoredPreview" style="display:none;white-space:pre-wrap;background:#f7f5fc;border-radius:12px;padding:14px;max-height:420px;overflow:auto;font:13px/1.55 inherit"></pre>
+</div>
+<div style="margin-top:18px"><div class="an"><div><div class="ring"><svg width="180" height="180"><circle cx="90" cy="90" r="76" fill="none" stroke="#eee9fb" stroke-width="14"/><circle id="rc" cx="90" cy="90" r="76" fill="none" stroke="url(#g)" stroke-width="14" stroke-linecap="round" stroke-dasharray="478" stroke-dashoffset="478" style="transition:stroke-dashoffset 1.4s ease"/><defs><linearGradient id="g"><stop offset="0" stop-color="#6d4aff"/><stop offset="1" stop-color="#ff6b57"/></linearGradient></defs></svg><b id="rn">0</b></div><p style="text-align:center;color:var(--mut);margin:8px 0 0;font-size:14px">ATS match out of 100</p></div>
+<div><b>Analysis</b><div id="analysisSummary" class="sub" style="margin-top:8px">Upload a resume and analyze a job to see your real ATS result.</div></div></div></div>
+</div>
+<div class="pane" id="p-kb">
+<div style="display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:10px;flex-wrap:wrap">
+  <p class="sub" style="margin:0;font-size:14px">Drag a card to another column to change its status.</p>
+  <button class="btn b1" id="addApplication" style="padding:9px 16px;font-size:14px">+ Add application</button>
+</div>
+<div class="kb" id="kb"></div></div>
+<div class="pane" id="p-chat">
+  <div class="chat" id="chat" aria-live="polite"></div>
+  <div style="display:flex;gap:8px;align-items:flex-end;margin-top:14px">
+    <textarea id="chatInput" rows="2" placeholder="Ask about your resume, ATS match, applications, interviews..." style="flex:1;padding:12px;border:1px solid #ddd;border-radius:12px;resize:vertical;font:inherit"></textarea>
+    <button class="btn b1" id="sendChat" style="padding:10px 16px">Send</button>
+  </div>
+  <p id="chatStatus" class="sub" style="margin:8px 0 0"></p>
+</div>
+</div></div></section></div></div>
+
+<section id="how"><div class="w"><h2>From resume to offer in four moves.</h2>
+<div class="steps">
+<div class="step" style="background:#f1edff"><i style="color:var(--vio)">01</i><h3>Upload your resume</h3><p>PDF or DOCX, parsed and stored securely.</p></div>
+<div class="step" style="background:#fff0ec"><i style="color:var(--cor)">02</i><h3>Add a job description</h3><p>Paste it once and keep it with the application.</p></div>
+<div class="step" style="background:#e6f8f5"><i style="color:var(--teal)">03</i><h3>Optimize with AI</h3><p>See your ATS match and tailor a new version.</p></div>
+<div class="step" style="background:#fff6df"><i style="color:#c98300">04</i><h3>Track the application</h3><p>Move it through the pipeline with reminders.</p></div></div>
+<p class="sub" style="margin-top:36px" id="faq"><b>Coming later, not built yet:</b> AI cover letters, a browser extension, a mobile app, interview preparation and LinkedIn optimization.</p></div></section>
+
+<section id="final" style="padding-top:20px"><div class="w"><div class="final"><h2>Stop managing your job search in scattered documents.</h2><a class="btn" href="#top">Start with Job Trail</a></div></div></section>
+<footer><div class="w"><a class="logo" href="#top"><i></i>Job Trail</a><a href="#app">Product</a><a href="#problem">Features</a><a href="#">Privacy</a><a href="#">Terms</a><a href="#">Contact</a><a href="#">GitHub</a></div></footer>
+
+<div id="loginModal" style="display:none;position:fixed;inset:0;z-index:1000;background:rgba(28,22,54,.45);align-items:center;justify-content:center;padding:20px;">
+  <div style="background:#fff;width:min(420px,100%);border-radius:20px;padding:28px;box-shadow:0 20px 60px rgba(0,0,0,.2);">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px">
+      <h2 id="authTitle" style="font-size:30px">Log in</h2>
+      <button id="closeLogin" style="border:0;background:none;font-size:24px;cursor:pointer">×</button>
+    </div>
+
+    <div id="signupNameWrap" style="display:none">
+      <label>Full name</label>
+      <input id="signupName" type="text" placeholder="Your name" style="width:100%;padding:12px;margin:6px 0 14px;border:1px solid #ddd;border-radius:10px;box-sizing:border-box">
+    </div>
+
+    <label>Email</label>
+    <input id="loginEmail" type="email" placeholder="you@example.com" style="width:100%;padding:12px;margin:6px 0 14px;border:1px solid #ddd;border-radius:10px;box-sizing:border-box">
+
+    <label>Password</label>
+    <input id="loginPassword" type="password" placeholder="Your password" style="width:100%;padding:12px;margin:6px 0 18px;border:1px solid #ddd;border-radius:10px;box-sizing:border-box">
+
+    <button id="submitLogin" class="btn b1" style="width:100%;justify-content:center">Log in</button>
+    <p id="loginMessage" style="margin:14px 0 0;font-size:14px;color:#6b6485"></p>
+
+    <p style="margin:18px 0 0;text-align:center;font-size:14px;color:#6b6485">
+      <span id="authSwitchText">Don't have an account?</span>
+      <button id="authSwitch" type="button" style="border:0;background:none;color:#6d4aff;font-weight:700;cursor:pointer;padding:0">Sign up</button>
+    </p>
+  </div>
+</div>
+
+<script>
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const API = '';
+const TOKEN_KEY='jobTrailAccessToken', REFRESH_KEY='jobTrailRefreshToken';
+const getToken=()=>localStorage.getItem(TOKEN_KEY);
+const setTokens=(session)=>{if(session?.access_token)localStorage.setItem(TOKEN_KEY,session.access_token);if(session?.refresh_token)localStorage.setItem(REFRESH_KEY,session.refresh_token)};
+const clearTokens=()=>{localStorage.removeItem(TOKEN_KEY);localStorage.removeItem(REFRESH_KEY)};
+async function apiFetch(endpoint, options={}){
+  const headers={...(options.headers||{})};
+  const isForm=options.body instanceof FormData;
+  if(!isForm) headers['Content-Type']='application/json';
+  const token=getToken(); if(token) headers.Authorization=`Bearer ${token}`;
+  let r=await fetch(`${API}${endpoint}`,{...options,headers});
+  if(r.status===401){
+    const refresh=localStorage.getItem(REFRESH_KEY);
+    if(refresh){
+      const rr=await fetch(`${API}/api/auth/refresh`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({refresh_token:refresh})});
+      const rd=await rr.json().catch(()=>({}));
+      if(rr.ok&&rd.success&&rd.data?.session){setTokens(rd.data.session);headers.Authorization=`Bearer ${rd.data.session.access_token}`;r=await fetch(`${API}${endpoint}`,{...options,headers});}
+    }
+  }
+  const data=await r.json().catch(()=>({}));
+  if(!r.ok||data.success===false) throw new Error(data?.error?.message||`Request failed (${r.status})`);
+  return data;
+}
+async function uploadFile(endpoint,file,name){const form=new FormData();form.append('file',file);if(name)form.append('name',name);return apiFetch(endpoint,{method:'POST',body:form});}
+
+const loginModal=$('#loginModal'),loginBtn=$('#loginBtn'),closeLogin=$('#closeLogin'),authTitle=$('#authTitle'),signupNameWrap=$('#signupNameWrap'),signupName=$('#signupName'),loginEmail=$('#loginEmail'),loginPassword=$('#loginPassword'),submitLogin=$('#submitLogin'),loginMessage=$('#loginMessage'),authSwitchText=$('#authSwitchText'),authSwitch=$('#authSwitch');
+let authMode='login';
+function setAuthMessage(message,color='#6b6485'){loginMessage.textContent=message;loginMessage.style.color=color;}
+function setAuthMode(mode){authMode=mode;const isSignup=mode==='signup';authTitle.textContent=isSignup?'Sign up':'Log in';signupNameWrap.style.display=isSignup?'block':'none';submitLogin.textContent=isSignup?'Create account':'Log in';authSwitchText.textContent=isSignup?'Already have an account?':"Don't have an account?";authSwitch.textContent=isSignup?'Log in':'Sign up';setAuthMessage('');}
+loginBtn.onclick=()=>{if(getToken()) logout();else {setAuthMode('login');loginModal.style.display='flex';loginEmail.focus();}};
+async function logout(){
+  loginBtn.disabled=true;
+  try{if(getToken()) await apiFetch('/api/auth/logout',{method:'POST'});}catch(e){console.warn('Logout request failed:',e.message);}
+  clearTokens();
+  activeResumeId=null;
+  activeJdId=null;
+  chatConversationId=null;
+  $('#chat').replaceChildren();
+  $('#chatStatus').textContent='';
+  $('#chatInput').value='';
+  loginModal.style.display='none';
+  loginBtn.textContent='Log in';
+  loginBtn.disabled=false;
+  $('#appDataNote').textContent='Live job-search data will appear here after you log in.';
+  sampleDash();renderSampleCards();
+  tab('dash');
+}
+function updateAuthButton(){loginBtn.textContent=getToken()?'Log out':'Log in';}
+
+closeLogin.onclick=()=>loginModal.style.display='none';
+authSwitch.onclick=()=>setAuthMode(authMode==='login'?'signup':'login');
+async function authenticate(){
+ const email=loginEmail.value.trim(),password=loginPassword.value;
+ if(!email||!password)return setAuthMessage('Please enter your email and password.','#c0392b');
+ if(authMode==='signup'&&!signupName.value.trim()){setAuthMessage('Please enter your full name.','#c0392b');signupName.focus();return;}
+ submitLogin.disabled=true;submitLogin.textContent=authMode==='signup'?'Creating account...':'Logging in...';setAuthMessage('');
+ try{
+  const endpoint=authMode==='signup'?'/api/auth/signup':'/api/auth/login';
+  const body=authMode==='signup'?{email,password,full_name:signupName.value.trim()}:{email,password};
+  const result=await apiFetch(endpoint,{method:'POST',body:JSON.stringify(body)});const data=result.data||result;const session=data.session||data;
+  if(authMode==='signup'&&!session.access_token){setAuthMessage('Account created. Check your email to confirm your account, then log in.','#18a957');setAuthMode('login');loginEmail.value=email;loginPassword.value='';return;}
+  if(!session.access_token)throw new Error('Authentication succeeded, but no access token was returned.');
+  setTokens(session);await enterLiveApp();updateAuthButton();setAuthMessage('Login successful.','#18a957');setTimeout(()=>loginModal.style.display='none',500);
+ }catch(e){console.error(e);setAuthMessage(e.message||'Unable to authenticate.','#c0392b');}
+ finally{submitLogin.disabled=false;submitLogin.textContent=authMode==='signup'?'Create account':'Log in';}
+}
+submitLogin.onclick=authenticate;loginPassword.addEventListener('keydown',e=>{if(e.key==='Enter')authenticate()});signupName.addEventListener('keydown',e=>{if(e.key==='Enter')authenticate()});
+
+addEventListener('scroll',()=>$('#nav').classList.toggle('s',scrollY>8),{passive:true});
+const S=[['Saved','#ffb020',40,140],['Applied','#6d4aff',300,110],['Screening','#0fb5a3',560,110],['Interview','#e8489a',800,100],['Offer','#18a957',1060,70]];
+$('#tn').innerHTML=S.map((s,i)=>`<circle class="node" cx="${s[2]}" cy="${s[3]}" r="17" fill="${s[1]}" stroke="#1c1636" stroke-width="3" style="animation-delay:${.5+i*.55}s"/><text class="nl" x="${s[2]}" y="${s[3]+44}" text-anchor="middle" style="animation-delay:${.6+i*.55}s">${s[0]}</text>`).join('');
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){$$('.step').forEach((x,i)=>setTimeout(()=>x.classList.add('in'),i*220));io.disconnect()}}),{threshold:.3});if($('.steps'))io.observe($('.steps'));
+function tab(t){$$('.tab').forEach(b=>b.setAttribute('aria-selected',b.dataset.t===t));$$('.pane').forEach(p=>p.classList.toggle('on',p.id==='p-'+t));if(t==='dash')dash();if(t==='an')ring();if(t==='chat')talk();if(t==='kb')loadApplications()}
+$$('.tab').forEach(b=>b.onclick=()=>tab(b.dataset.t));$$('[data-go]').forEach(a=>a.onclick=()=>tab(a.dataset.go));
+function count(el,to,suf=''){let t0=null;const f=t=>{t0??=t;const p=Math.min((t-t0)/700,1);el.textContent=Math.round(to*p)+suf;if(p<1)requestAnimationFrame(f)};requestAnimationFrame(f)}
+const COL=[['Saved','#ffb020'],['Applied','#6d4aff'],['Screening','#0fb5a3'],['Interview','#e8489a'],['Offer','#18a957'],['Rejected','#8a84a3']];
+function fmtDate(v){if(!v)return '';const d=new Date(v);return Number.isNaN(d.getTime())?String(v):d.toLocaleDateString(undefined,{day:'numeric',month:'short'});}
+function renderChart(rows){const svg=$('#line');if(!rows?.length){svg.innerHTML='<text x="200" y="68" text-anchor="middle" fill="#8a84a3">No applications yet</text>';return;}const vals=rows.map(x=>Number(x.count)||0),max=Math.max(...vals,1),pts=rows.map((x,i)=>{const xx=6+(i*Math.max(1,388/(rows.length-1||1)));return [xx,120-(Number(x.count)||0)/max*90]});const path='M'+pts.map(p=>p.join(',')).join(' L');svg.innerHTML=`<path d="${path}" fill="none" stroke="#6d4aff" stroke-width="3" stroke-linecap="round"/>`+pts.map((p,i)=>`<circle cx="${p[0]}" cy="${p[1]}" r="4" fill="${['#6d4aff','#e8489a','#ff6b57','#ffb020','#0fb5a3'][i%5]}"/>`).join('');}
+function renderReminders(summary){const box=$('#p-dash .row2 .box:last-child');const items=summary?.upcoming||[];box.innerHTML='<h3>Reminders</h3>'+(items.length?items.slice(0,3).map((r,i)=>`<div class="rem"><span class="dot" style="background:${COL[(i+1)%COL.length][1]}"></span><span><b>${escapeHtml(r.title||'Reminder')}</b><br><small>${fmtDate(r.effective_due_at||r.due_at)}</small></span></div>`).join(''):'<p class="sub">No upcoming reminders.</p>');}
+function escapeHtml(v){return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+async function dash(){
+ const token=getToken(); if(!token){return sampleDash();}
+ try{const [d,p]=await Promise.all([apiFetch('/api/analytics/dashboard?range=30d'),apiFetch('/api/profiles/me')]);const data=d.data||{};const o=data.overview||{};const profile=p.data||{};$('#greeting').textContent=`Good morning, ${profile.full_name||'there'}`;$('#appDataNote').textContent='Live data from your Job Trail account.';const vals=[['Total',o.totalApplications||0,'#f1edff',''],['Active',o.activeApplications||0,'#e6f8f5',''],['Interviews',o.interviews||0,'#fdeaf4',''],['Offers',o.offers||0,'#e8f7ee',''],['Response rate',o.responseRate||0,'#fff6df','%']];$('#stats').innerHTML=vals.map(x=>`<div class="st" style="background:${x[2]}"><b>0</b><span>${x[0]}</span></div>`).join('');$$('#stats b').forEach((b,i)=>count(b,vals[i][1],vals[i][3]));renderChart(o.applicationsOverTime);renderReminders(data.reminders);}
+ catch(e){console.error('Dashboard load failed',e);$('#appDataNote').textContent=`Dashboard could not load: ${e.message}`;}
+}
+function sampleDash(){const ST=[['Total',24,'#f1edff',''],['Active',11,'#e6f8f5',''],['Interviews',5,'#fdeaf4',''],['Offers',2,'#e8f7ee',''],['Response rate',38,'#fff6df','%']];$('#stats').innerHTML=ST.map(s=>`<div class="st" style="background:${s[2]}"><b>0</b><span>${s[0]}</span></div>`).join('');$$('#stats b').forEach((b,i)=>count(b,ST[i][1],ST[i][3]));renderChart([{count:2},{count:4},{count:3},{count:6},{count:5},{count:8},{count:7},{count:10},{count:9},{count:12}]);}
+async function loadApplications(){const kb=$('#kb');if(!getToken()){renderSampleCards();return;}try{const r=await apiFetch('/api/applications?limit=100&sort=created_at&order=desc');renderCards(r.data||[]);$('#appDataNote').textContent='Live data from your Job Trail account.';}catch(e){console.error(e);kb.innerHTML=`<p class="sub">Could not load applications: ${escapeHtml(e.message)}</p>`;}}
+function renderColumns(){const kb=$('#kb');kb.innerHTML=COL.map((c,i)=>`<div class="col" data-c="${i}"><h3><span class="dot" style="background:${c[1]}"></span>${c[0]}</h3></div>`).join('');return kb;}
+function renderCards(apps){const kb=renderColumns();if(!apps.length){kb.children[0].innerHTML+='<p class="sub" style="font-size:13px">No applications yet.</p>';return;}apps.forEach(a=>{const idx=Math.max(0,COL.findIndex(c=>c[0].toLowerCase()===String(a.status).toLowerCase()));const e=document.createElement('div');e.className='kc';e.draggable=true;e.tabIndex=0;e.dataset.id=a.id;e.dataset.status=a.status;e.style.borderLeftColor=COL[idx][1];e.innerHTML=`<b>${escapeHtml(a.company_name)}</b>${escapeHtml(a.job_title)}<br><small>${escapeHtml(a.resume_version?.version_name||a.location||a.status)}</small><br><small style="color:#6d4aff;font-weight:700">Click to edit</small>`;e.ondragstart=()=>{drag=e;e.classList.add('drag')};e.ondragend=()=>{e.classList.remove('drag');drag=null};e.onclick=async ev=>{if(drag)return;await editApplication(a)};e.onkeydown=async ev=>{if(ev.key==='Enter'||ev.key===' '){ev.preventDefault();await editApplication(a);return;}const col=e.parentNode;const next=ev.key==='ArrowRight'?col.nextElementSibling:ev.key==='ArrowLeft'?col.previousElementSibling:null;if(next)await moveCard(e,next)};kb.children[idx].appendChild(e);});setupDropZones();}
+let drag;function setupDropZones(){$$('.col').forEach(c=>{c.ondragover=e=>{e.preventDefault();c.classList.add('over')};c.ondragleave=()=>c.classList.remove('over');c.ondrop=async()=>{c.classList.remove('over');if(drag){const card=drag;await moveCard(card,c);drag=null;}}})}
+async function moveCard(card,col){if(!card||!col||card.parentNode===col)return;const old=card.parentNode,newStatus=COL[Number(col.dataset.c)][0].toLowerCase();const oldStatus=card.dataset.status;col.appendChild(card);card.style.borderLeftColor=COL[Number(col.dataset.c)][1];card.dataset.status=newStatus;try{await apiFetch(`/api/applications/${card.dataset.id}/status`,{method:'PATCH',body:JSON.stringify({status:newStatus,note:`Moved from ${oldStatus} to ${newStatus}`})});dash();}catch(e){old.appendChild(card);card.dataset.status=oldStatus;card.style.borderLeftColor=COL[Number(old.dataset.c)][1];alert(`Could not save status: ${e.message}`);}}
+async function editApplication(a){
+  if(confirm(`Delete ${a.company_name} — ${a.job_title}?\n\nChoose OK to delete it, or Cancel to edit it.`)){
+    try{await apiFetch(`/api/applications/${a.id}`,{method:'DELETE'});await loadApplications();await dash();}catch(e){alert(`Could not delete application: ${e.message}`);}return;
+  }
+  const company=prompt('Company name:',a.company_name||''); if(company===null)return;
+  const role=prompt('Job title / role:',a.job_title||''); if(role===null)return;
+  const location=prompt('Location (optional):',a.location||''); if(location===null)return;
+  const salary=prompt('Salary (optional):',a.salary||''); if(salary===null)return;
+  const notes=prompt('Notes (optional):',a.notes||''); if(notes===null)return;
+  const status=prompt('Status: saved, applied, screening, interview, offer, rejected',String(a.status||'applied')).toLowerCase().trim();
+  if(!COL.some(c=>c[0].toLowerCase()===status)){alert('Invalid status. Use saved, applied, screening, interview, offer, or rejected.');return;}
+  try{await apiFetch(`/api/applications/${a.id}`,{method:'PUT',body:JSON.stringify({company_name:company.trim(),job_title:role.trim(),location:location.trim()||null,salary:salary.trim()||null,notes:notes.trim()||null,status})});await loadApplications();await dash();}
+  catch(e){alert(`Could not update application: ${e.message}`);}
+}
+
+function renderSampleCards(){const sample=[['Zoho','Frontend Developer',0,'Master v3'],['Atlassian','React Engineer',1,'Atlassian v1'],['Google','Software Engineer',1,'Master v3'],['Infosys','Web Developer',2,'General v2'],['Razorpay','Frontend Developer',3,'Razorpay v2'],['Microsoft','SDE Intern',4,'Master v3'],['TCS','Associate Engineer',5,'General v2']];renderColumns();sample.forEach(c=>{const e=document.createElement('div');e.className='kc';e.draggable=true;e.innerHTML=`<b>${c[0]}</b>${c[1]}<br><small>${c[3]}</small>`;e.style.borderLeftColor=COL[c[2]][1];$('#kb').children[c[2]].appendChild(e);});setupDropZones();}
+$('#addApplication').onclick=async()=>{if(!getToken()){alert('Please log in first.');return;}const company=prompt('Company name');if(!company)return;const role=prompt('Job title / role');if(!role)return;const status=(prompt('Status: saved, applied, screening, interview, offer, rejected','applied')||'applied').toLowerCase();if(!COL.some(c=>c[0].toLowerCase()===status)){alert('Invalid status. Use saved, applied, screening, interview, offer, or rejected.');return;}try{await apiFetch('/api/applications',{method:'POST',body:JSON.stringify({company_name:company,job_title:role,status,application_date:new Date().toISOString().slice(0,10)})});await loadApplications();await dash();}catch(e){alert(`Could not create application: ${e.message}`);}};
+function ring(){const c=$('#rc');c.style.transition='none';c.style.strokeDashoffset=478;$('#rn').textContent=0;requestAnimationFrame(()=>requestAnimationFrame(()=>{c.style.transition='stroke-dashoffset 1.4s ease';c.style.strokeDashoffset=478*.18;count($('#rn'),82)}));}
+let chatConversationId=null;
+let activeResumeId=null, activeJdId=null;
+function addChatMessage(role,content){const c=$('#chat');const d=document.createElement('div');d.className=`m ${role==='user'?'mu':'ma'}`;d.textContent=content;c.appendChild(d);c.scrollTop=c.scrollHeight;return d;}
+async function talk(){
+  const c=$('#chat');
+  if(!getToken()){c.innerHTML='<div class="m mu">Log in to use the AI assistant.</div>';return;}
+  if(!c.children.length)addChatMessage("assistant","Hi. I'm your Job Trail career assistant. Ask me about your resume, ATS match, applications, interviews, or follow-ups.");
+}
+async function sendChat(){
+  if(!getToken()){setAuthMode('login');loginModal.style.display='flex';return;}
+  const input=$('#chatInput'),message=input.value.trim(); if(!message)return;
+  input.value='';addChatMessage('user',message);const status=$('#chatStatus');status.textContent='AI is thinking...';$('#sendChat').disabled=true;
+  try{
+    const body={message};if(chatConversationId)body.conversation_id=chatConversationId;if(activeResumeId)body.resume_id=activeResumeId;if(activeJdId)body.job_description_id=activeJdId;
+    const r=await apiFetch('/api/ai/chat',{method:'POST',body:JSON.stringify(body)});const d=r.data||r;chatConversationId=d.conversation_id;addChatMessage('assistant',d.message?.content||'No response was returned.');status.textContent='';
+  }catch(e){addChatMessage('assistant',`I couldn't answer that: ${e.message}`);status.textContent='';}
+  finally{$('#sendChat').disabled=false;input.focus();}
+}
+$('#sendChat').onclick=sendChat;$('#chatInput').addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendChat();}});
+
+async function uploadResumeFromUI(){
+  if(!getToken()){alert('Please log in first.');return;}
+  const file=$('#resumeFile').files[0];if(!file){$('#resumeStatus').textContent='Choose a PDF or DOCX first.';return;}
+  const b=$('#uploadResume');b.disabled=true;b.textContent='Uploading...';$('#resumeStatus').textContent='';
+  try{const r=await uploadFile('/api/resumes',file,$('#resumeName').value.trim());const d=r.data||r;activeResumeId=d.id;chatConversationId=null;$('#resumeStatus').textContent=`Uploaded: ${d.name||file.name}`;$('#resumeStatus').style.color='#18a957';}
+  catch(e){$('#resumeStatus').textContent=e.message;$('#resumeStatus').style.color='#c0392b';}
+  finally{b.disabled=false;b.textContent='Upload resume';}
+}
+async function saveJobDescription(){
+  if(!getToken()){alert('Please log in first.');return;}
+  const raw=$('#jdText').value.trim();if(!raw){$('#jdStatus').textContent='Paste the job description first.';return;}
+  const b=$('#saveJd');b.disabled=true;b.textContent='Analyzing...';
+  try{const r=await apiFetch('/api/job-descriptions/analyze',{method:'POST',body:JSON.stringify({title:$('#jdTitle').value.trim()||null,company:$('#jdCompany').value.trim()||null,raw_text:raw,force:false})});const d=r.data||r;activeJdId=d.id;chatConversationId=null;$('#jdStatus').textContent=`Job saved: ${d.title||$('#jdTitle').value.trim()||'Job description'}`;$('#jdStatus').style.color='#18a957';}
+  catch(e){$('#jdStatus').textContent=e.message;$('#jdStatus').style.color='#c0392b';}
+  finally{b.disabled=false;b.textContent='Save & analyze job';}
+}
+async function analyzeResumeReal(){
+  if(!activeResumeId||!activeJdId){$('#tailorStatus').textContent='Upload a resume and save a job description first.';return;}
+  const b=$('#analyzeResumeBtn');b.disabled=true;b.textContent='Analyzing...';
+  try{const r=await apiFetch('/api/ai/analyze-resume',{method:'POST',body:JSON.stringify({resume_id:activeResumeId,job_description_id:activeJdId,force:false})});const d=r.data||r;const score=Number(d.ats_score||0);$('#rn').textContent=score;$('#rc').style.strokeDashoffset=478-(478*score/100);$('#analysisSummary').textContent=d.summary||`ATS match: ${score}/100. Review the recommendations and missing skills in the saved analysis.`;$('#tailorStatus').textContent=`ATS analysis complete: ${score}/100`;
+  }catch(e){$('#tailorStatus').textContent=e.message;}
+  finally{b.disabled=false;b.textContent='Analyze ATS match';}
+}
+let activeResumeVersionId=null;
+async function downloadTailoredResume(format){
+  if(!activeResumeVersionId){$('#tailorStatus').textContent='Tailor the resume first.';return;}
+  const b=format==='docx'?$('#downloadDocxBtn'):$('#downloadPdfBtn');
+  const old=b.textContent;b.disabled=true;b.textContent='Preparing...';
+  try{
+    const token=getToken();
+    const r=await fetch(`${API}/api/resume-versions/${activeResumeVersionId}/download?format=${format}`,{headers:{Authorization:`Bearer ${token}`}});
+    if(!r.ok){const d=await r.json().catch(()=>({}));throw new Error(d?.error?.message||`Download failed (${r.status})`);}
+    const blob=await r.blob();
+    const disposition=r.headers.get('Content-Disposition')||'';
+    const match=disposition.match(/filename=\"([^\"]+)/i);
+    const filename=match?.[1]||`Tailored_Resume.${format}`;
+    const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=filename;document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(url);
+  }catch(e){$('#tailorStatus').textContent=e.message;$('#tailorStatus').style.color='#c0392b';}
+  finally{b.disabled=false;b.textContent=old;}
+}
+async function tailorResumeReal(){
+  if(!activeResumeId||!activeJdId){$('#tailorStatus').textContent='Upload a resume and save a job description first.';return;}
+  const b=$('#tailorResumeBtn');b.disabled=true;b.textContent='Tailoring...';$('#tailoredPreview').style.display='none';$('#tailoredDownloads').style.display='none';
+  try{const r=await apiFetch('/api/ai/tailor-resume',{method:'POST',body:JSON.stringify({resume_id:activeResumeId,job_description_id:activeJdId,version_name:$('#jdTitle').value.trim()||'AI Tailored Resume'})});const d=r.data||r;activeResumeVersionId=d.version?.id||null;$('#tailorStatus').textContent=`Tailored version created. ATS: ${d.scoreBefore} → ${d.scoreAfter}. Applied ${d.applied?.length||0} changes.`;$('#tailoredPreview').textContent=d.version?.content||'Tailored version created successfully.';$('#tailoredPreview').style.display='block';if(activeResumeVersionId)$('#tailoredDownloads').style.display='flex';}
+  catch(e){$('#tailorStatus').textContent=e.message;$('#tailorStatus').style.color='#c0392b';}
+  finally{b.disabled=false;b.textContent='Tailor resume with AI';}
+}
+$('#uploadResume').onclick=uploadResumeFromUI;$('#saveJd').onclick=saveJobDescription;$('#analyzeResumeBtn').onclick=analyzeResumeReal;$('#tailorResumeBtn').onclick=tailorResumeReal;$('#downloadDocxBtn').onclick=()=>downloadTailoredResume('docx');$('#downloadPdfBtn').onclick=()=>downloadTailoredResume('pdf');
+
+async function enterLiveApp(){
+  loginModal.style.display='none';
+  updateAuthButton();
+  // Dashboard/application failures must not prevent the AI assistant from loading.
+  const results=await Promise.allSettled([dash(),loadApplications()]);
+  if(results.some(r=>r.status==='rejected')){
+    $('#appDataNote').textContent='Some live data could not be loaded. The AI assistant and resume tools are still available.';
+  }
+  talk();
+}
+// Initial state
+if(getToken())enterLiveApp();else{sampleDash();renderSampleCards();updateAuthButton();}
+fetch('/health').then(r=>r.json()).then(data=>console.log('Backend connected:',data)).catch(e=>console.error('Backend connection failed:',e));
+</script>
+
+</body></html>

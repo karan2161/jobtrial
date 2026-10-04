@@ -1,0 +1,12 @@
+import { Router } from 'express';
+import { reminderController as c } from '../controllers/reminderController.js';
+import { validate } from '../middleware/validation.js';
+import { idParams, reminderCreate, reminderListQuery, reminderUpdate, snoozeBody } from '../utils/validation.js';
+const router = Router();
+router.get('/', validate({ query: reminderListQuery }), c.list);
+router.post('/', validate({ body: reminderCreate }), c.create);
+router.put('/:id', validate({ params: idParams, body: reminderUpdate }), c.update);
+router.patch('/:id/complete', validate({ params: idParams }), c.complete);
+router.patch('/:id/snooze', validate({ params: idParams, body: snoozeBody }), c.snooze);
+router.delete('/:id', validate({ params: idParams }), c.remove);
+export default router;
